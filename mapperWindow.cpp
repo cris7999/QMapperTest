@@ -2,12 +2,12 @@
 // Created by cris on 14/10/21.
 //
 
-#include <QPushButton>
 #include "mapperWindow.h"
 
 mapperWindow::mapperWindow() {
     crearVentana();
     enlazarConnects();
+    busquedaDeSolucion();
 }
 
 
@@ -88,4 +88,24 @@ void mapperWindow::crearVentana() {
 
 void mapperWindow::enlazarConnects() {
     connect(botonSalir, SIGNAL(clicked()),this, SLOT(close()));
+}
+
+QString mapperWindow::busquedaDeSolucion() {
+
+    QFile file("/home/cris/CLionProjects/QMapperTest/test.csv");
+    if (!file.open(QIODevice::ReadOnly)) {
+        qDebug() << file.errorString();
+        return "error";
+    }
+
+    QStringList wordList;
+    while (!file.atEnd()) {
+        QByteArray line = file.readLine();
+
+        wordList.append(line.split('###').first());
+    }
+
+    qDebug() << wordList;
+    textoRespuesta->setText(wordList.join("#"));
+    return "wordList";
 }

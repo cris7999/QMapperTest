@@ -13,7 +13,7 @@ find_package(Qt5 COMPONENTS
         Widgets
         REQUIRED)
 
-add_executable(QMapperTest main.cpp mapperWindow.cpp mapperWindow.h)
+add_executable(QMapperTest main.cpp mapperWindow.cpp mapperWindow.h PreguntaRespuesta.cpp PreguntaRespuesta.h)
 target_link_libraries(QMapperTest
         Qt5::Core
         Qt5::Gui

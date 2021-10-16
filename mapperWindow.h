@@ -10,6 +10,10 @@
 #include <QLineEdit>
 #include <QTextEdit>
 #include <QCheckBox>
+#include <QPushButton>
+#include <QFile>
+#include <QStringList>
+#include <QDebug>
 
 class mapperWindow : public QWidget{
 public:
@@ -19,6 +23,7 @@ private:
 
     void crearVentana();
     void enlazarConnects();
+    QString busquedaDeSolucion();
     ///Atributos:
 
     //Pregunta
