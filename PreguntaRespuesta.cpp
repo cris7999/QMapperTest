@@ -16,7 +16,7 @@ void PreguntaRespuesta::setCorrect(bool value) {
     correcta=value;
 }
 
-QString PreguntaRespuesta::getPregunta() {
+QString PreguntaRespuesta::getPregunta() const {
     return pregunta;
 }
 
@@ -26,4 +26,8 @@ void PreguntaRespuesta::setPregunta(QString pregunta) {
 
 QStringList PreguntaRespuesta::getRespuestas() {
     return respuestas;
+}
+
+void PreguntaRespuesta::appendRespuesta(QString respuesta) {
+    respuestas.append(respuesta);
 }

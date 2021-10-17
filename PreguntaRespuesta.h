@@ -15,11 +15,12 @@ public:
     bool isCorrect();
     void setCorrect(bool value);
 
-    QString getPregunta();
+    QString getPregunta() const;
     void setPregunta(QString pregunta);
 
     QStringList getRespuestas();
     void setRespuestas(QStringList respuestas);
+    void appendRespuesta(QString respuesta);
 
 private:
     QString pregunta;

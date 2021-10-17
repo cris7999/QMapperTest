@@ -3,6 +3,7 @@
 //
 
 
+#include <search.h>
 #include "mapperWindow.h"
 
 mapperWindow::mapperWindow() {
@@ -88,7 +89,7 @@ void mapperWindow::crearVentana() {
 }
 
 void mapperWindow::enlazarConnects() {
-    connect(botonSalir, SIGNAL(clicked()),this, SLOT(close()));
+    connect(botonSalir,&QPushButton::clicked,this, &mapperWindow::salvarTodo);
     connect(botonDeBusqueda,
             &QPushButton::clicked,this,&mapperWindow::busqueda);
     connect(botonAnnadir,&QPushButton::clicked,this,&mapperWindow::annadirPreguntaADocumento);
@@ -147,13 +148,18 @@ void mapperWindow::annadirPreguntaADocumento() {
     nueva.setCorrect(check->isChecked());
     nueva.setPregunta(textoPregunta->toPlainText());
     nueva.setRespuestas(textoRespuesta->toPlainText().split('\n'));
+    bool correcta = check->isChecked();
+
     bool encontrado = false;
-    for (PreguntaRespuesta aux : listadoPreguntasRespuesta){
+
+    for ( int i =0 ; i<listadoPreguntasRespuesta.size();++i){
+        PreguntaRespuesta aux= listadoPreguntasRespuesta.at(i);
         if(aux.getPregunta() == nueva.getPregunta()){
-            encontrado = true;
-            QMessageBox msgBox;
-            msgBox.setText("La pregunta ya existia");
-            msgBox.exec();
+            PreguntaRespuesta modificada = aux;
+            modificada.appendRespuesta(nueva.getRespuestas().join("#"));
+            listadoPreguntasRespuesta.removeAt(i);
+            listadoPreguntasRespuesta.append(modificada);
+            return;
         }
     }
     if(!encontrado){
@@ -170,6 +176,26 @@ void mapperWindow::annadirPreguntaADocumento() {
     }
 
 
+
+}
+
+void mapperWindow::salvarTodo() {
+    QFile archivo("test.csv");
+    if(archivo.open(QIODevice::WriteOnly | QIODevice::Text)){
+        QTextStream datosArchivo(&archivo);
+
+        for(PreguntaRespuesta aux: listadoPreguntasRespuesta){
+            datosArchivo << aux.getPregunta()<<"#";
+            for(QString respuesta: aux.getRespuestas()){
+                datosArchivo << respuesta <<"#";
+            }
+            datosArchivo<<"\n";
+        }
+
+
+    }
+    archivo.close();
+    close();
 }
 
 

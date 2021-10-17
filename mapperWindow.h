@@ -24,8 +24,9 @@ public:
 public slots:
     void busqueda();
     void annadirPreguntaADocumento();
-private:
+    void salvarTodo();
 
+private:
     void crearVentana();
     void enlazarConnects();
     void cargaDePreguntasYSoluciones();
