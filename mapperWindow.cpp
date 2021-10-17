@@ -88,6 +88,8 @@ void mapperWindow::crearVentana() {
 
 void mapperWindow::enlazarConnects() {
     connect(botonSalir, SIGNAL(clicked()),this, SLOT(close()));
+    connect(botonDeBusqueda,
+            &QPushButton::clicked,this,&mapperWindow::busqueda);
 }
 
 void mapperWindow::cargaDePreguntasYSoluciones() {
@@ -121,3 +123,20 @@ void mapperWindow::cargaDePreguntasYSoluciones() {
         listadoPreguntasRespuesta.append(parPreguntaRespuesta);
     }
 }
+
+void mapperWindow::busqueda() {
+    QString textoPregunta = buscaPregunta->toPlainText();
+    QStringList respuestas;
+
+    for(PreguntaRespuesta iteracion: listadoPreguntasRespuesta){
+        qDebug()<<"miPregunta:"<<textoPregunta<< " iteracion:"<<iteracion.getPregunta()<<"|"<<iteracion.getRespuestas();
+        if(iteracion.getPregunta() == textoPregunta){
+            respuestas = iteracion.getRespuestas();
+            break;
+        }
+    }
+
+    solucion->setText(respuestas.join('\n'));
+}
+
+

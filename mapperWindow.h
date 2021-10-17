@@ -20,6 +20,9 @@ class mapperWindow : public QWidget{
 public:
     mapperWindow();
 
+public slots:
+    void busqueda();
+
 private:
 
     void crearVentana();
