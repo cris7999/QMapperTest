@@ -2,6 +2,7 @@
 // Created by cris on 14/10/21.
 //
 
+
 #include "mapperWindow.h"
 
 mapperWindow::mapperWindow() {
@@ -146,16 +147,28 @@ void mapperWindow::annadirPreguntaADocumento() {
     nueva.setCorrect(check->isChecked());
     nueva.setPregunta(textoPregunta->toPlainText());
     nueva.setRespuestas(textoRespuesta->toPlainText().split('\n'));
-    listadoPreguntasRespuesta.append(nueva);
-
-    QFile archivo("test.csv");
-    if(archivo.open(QIODevice::Append | QIODevice::Text)){
-        QTextStream datosArchivo(&archivo);
-        datosArchivo << nueva.getPregunta()<<"#";
-        datosArchivo << nueva.getRespuestas().join('#');
-
+    bool encontrado = false;
+    for (PreguntaRespuesta aux : listadoPreguntasRespuesta){
+        if(aux.getPregunta() == nueva.getPregunta()){
+            encontrado = true;
+            QMessageBox msgBox;
+            msgBox.setText("La pregunta ya existia");
+            msgBox.exec();
+        }
     }
-    archivo.close();
+    if(!encontrado){
+        listadoPreguntasRespuesta.append(nueva);
+
+        QFile archivo("test.csv");
+        if(archivo.open(QIODevice::Append | QIODevice::Text)){
+            QTextStream datosArchivo(&archivo);
+            datosArchivo << nueva.getPregunta()<<"#";
+            datosArchivo << nueva.getRespuestas().join('#');
+
+        }
+        archivo.close();
+    }
+
 
 }
 

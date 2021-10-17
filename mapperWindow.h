@@ -14,6 +14,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QDebug>
+#include <QMessageBox>
 #include "PreguntaRespuesta.h"
 
 class mapperWindow : public QWidget{
@@ -22,12 +23,14 @@ public:
 
 public slots:
     void busqueda();
-
+    void annadirPreguntaADocumento();
 private:
 
     void crearVentana();
     void enlazarConnects();
     void cargaDePreguntasYSoluciones();
+
+
     ///Atributos:
     QList<PreguntaRespuesta> listadoPreguntasRespuesta;
 
