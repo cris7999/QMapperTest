@@ -14,6 +14,7 @@
 #include <QFile>
 #include <QStringList>
 #include <QDebug>
+#include "PreguntaRespuesta.h"
 
 class mapperWindow : public QWidget{
 public:
@@ -23,8 +24,9 @@ private:
 
     void crearVentana();
     void enlazarConnects();
-    QString busquedaDeSolucion();
+    void cargaDePreguntasYSoluciones();
     ///Atributos:
+    QList<PreguntaRespuesta> listadoPreguntasRespuesta;
 
     //Pregunta
     QLabel* pregunta;

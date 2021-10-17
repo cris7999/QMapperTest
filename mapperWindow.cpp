@@ -7,7 +7,7 @@
 mapperWindow::mapperWindow() {
     crearVentana();
     enlazarConnects();
-    busquedaDeSolucion();
+    cargaDePreguntasYSoluciones();
 }
 
 
@@ -90,22 +90,34 @@ void mapperWindow::enlazarConnects() {
     connect(botonSalir, SIGNAL(clicked()),this, SLOT(close()));
 }
 
-QString mapperWindow::busquedaDeSolucion() {
+void mapperWindow::cargaDePreguntasYSoluciones() {
 
     QFile file("/home/cris/CLionProjects/QMapperTest/test.csv");
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << file.errorString();
-        return "error";
     }
 
     QStringList wordList;
     while (!file.atEnd()) {
         QByteArray line = file.readLine();
+        QList<QByteArray> lineaArray = line.split('#');
+        QStringList listaPalabrasPorLinea;
 
-        wordList.append(line.split('###').first());
+        for(int i=0; i<lineaArray.size(); ++i){
+            listaPalabrasPorLinea.append(lineaArray[i].constData());
+        }
+
+        QString pregunta =listaPalabrasPorLinea.takeFirst();
+
+        for (int i = 0; i < listaPalabrasPorLinea.size(); ++i) {
+            wordList.append(listaPalabrasPorLinea.at(i));
+        }
+
+        PreguntaRespuesta parPreguntaRespuesta;
+        parPreguntaRespuesta.setPregunta(pregunta);
+        parPreguntaRespuesta.setRespuestas(listaPalabrasPorLinea);
+        parPreguntaRespuesta.setCorrect(listaPalabrasPorLinea.size() == 1);
+
+        listadoPreguntasRespuesta.append(parPreguntaRespuesta);
     }
-
-    qDebug() << wordList;
-    textoRespuesta->setText(wordList.join("#"));
-    return "wordList";
 }

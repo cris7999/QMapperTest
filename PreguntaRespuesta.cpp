@@ -25,5 +25,5 @@ void PreguntaRespuesta::setPregunta(QString pregunta) {
 }
 
 QStringList PreguntaRespuesta::getRespuestas() {
-    return QStringList();
+    return respuestas;
 }
