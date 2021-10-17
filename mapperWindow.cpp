@@ -90,11 +90,12 @@ void mapperWindow::enlazarConnects() {
     connect(botonSalir, SIGNAL(clicked()),this, SLOT(close()));
     connect(botonDeBusqueda,
             &QPushButton::clicked,this,&mapperWindow::busqueda);
+    connect(botonAnnadir,&QPushButton::clicked,this,&mapperWindow::annadirPreguntaADocumento);
 }
 
 void mapperWindow::cargaDePreguntasYSoluciones() {
 
-    QFile file("/home/cris/CLionProjects/QMapperTest/test.csv");
+    QFile file("test.csv");
     if (!file.open(QIODevice::ReadOnly)) {
         qDebug() << file.errorString();
     }
@@ -122,6 +123,7 @@ void mapperWindow::cargaDePreguntasYSoluciones() {
 
         listadoPreguntasRespuesta.append(parPreguntaRespuesta);
     }
+    file.close();
 }
 
 void mapperWindow::busqueda() {
@@ -129,7 +131,6 @@ void mapperWindow::busqueda() {
     QStringList respuestas;
 
     for(PreguntaRespuesta iteracion: listadoPreguntasRespuesta){
-        qDebug()<<"miPregunta:"<<textoPregunta<< " iteracion:"<<iteracion.getPregunta()<<"|"<<iteracion.getRespuestas();
         if(iteracion.getPregunta() == textoPregunta){
             respuestas = iteracion.getRespuestas();
             break;
@@ -137,6 +138,25 @@ void mapperWindow::busqueda() {
     }
 
     solucion->setText(respuestas.join('\n'));
+}
+
+void mapperWindow::annadirPreguntaADocumento() {
+
+    PreguntaRespuesta nueva;
+    nueva.setCorrect(check->isChecked());
+    nueva.setPregunta(textoPregunta->toPlainText());
+    nueva.setRespuestas(textoRespuesta->toPlainText().split('\n'));
+    listadoPreguntasRespuesta.append(nueva);
+
+    QFile archivo("test.csv");
+    if(archivo.open(QIODevice::Append | QIODevice::Text)){
+        QTextStream datosArchivo(&archivo);
+        datosArchivo << nueva.getPregunta()<<"#";
+        datosArchivo << nueva.getRespuestas().join('#');
+
+    }
+    archivo.close();
+
 }
 
 
